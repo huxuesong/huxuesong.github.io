@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2017/4 | Hexo</title>
+  <title>Unity调用iOS陀螺仪 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2017/04/index.html">
+  <meta name="description" content="实现陀螺仪功能，旋转设备，摄像机跟随旋转将下面脚本拖拽到摄像机上，打包为Android或iOS项目，在真机上测试即可场景中要放一些模型，不然看不到效果 using UnityEngine; using System.Collections; public class AAA : MonoBehaviour { private const float lowPassFilterFactor = 0.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity调用iOS陀螺仪">
+<meta property="og:url" content="http://yoursite.com/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="实现陀螺仪功能，旋转设备，摄像机跟随旋转将下面脚本拖拽到摄像机上，打包为Android或iOS项目，在真机上测试即可场景中要放一些模型，不然看不到效果 using UnityEngine; using System.Collections; public class AAA : MonoBehaviour { private const float lowPassFilterFactor = 0.">
+<meta property="og:updated_time" content="2017-04-14T13:01:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="Unity调用iOS陀螺仪">
+<meta name="twitter:description" content="实现陀螺仪功能，旋转设备，摄像机跟随旋转将下面脚本拖拽到摄像机上，打包为Android或iOS项目，在真机上测试即可场景中要放一些模型，不然看不到效果 using UnityEngine; using System.Collections; public class AAA : MonoBehaviour { private const float lowPassFilterFactor = 0.">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,58 +64,96 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/hello-world/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:41.000Z" itemprop="datePublished">Apr 14</time>
+        <section id="main"><article id="post-2016-06-06-unitydiao-yong-iostuo-luo-yi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" class="article-date">
+  <time datetime="2016-06-06T10:42:31.000Z" itemprop="datePublished">2016-06-06</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Unity/">Unity</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      Unity调用iOS陀螺仪
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:40.000Z" itemprop="datePublished">Apr 14</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
-    </h1>
-  
+        <p>实现陀螺仪功能，旋转设备，摄像机跟随旋转<br>将下面脚本拖拽到摄像机上，打包为Android或iOS项目，在真机上测试即可<br>场景中要放一些模型，不然看不到效果</p>
+<pre><code>using UnityEngine;
+using System.Collections;
+public class AAA : MonoBehaviour {
+private const float lowPassFilterFactor = 0.2f;
+protected void Start()
+{
+    //设置设备陀螺仪的开启/关闭状态，使用陀螺仪功能必须设置为 true
+    Input.gyro.enabled = true;
+    //获取设备重力加速度向量
+    Vector3 deviceGravity = Input.gyro.gravity;
+    //设备的旋转速度，返回结果为x，y，z轴的旋转速度，单位为（弧度/秒）
+    Vector3 rotationVelocity = Input.gyro.rotationRate;
+    //获取更加精确的旋转
+    Vector3 rotationVelocity2 = Input.gyro.rotationRateUnbiased;
+    //设置陀螺仪的更新检索时间，即隔 0.1秒更新一次
+    Input.gyro.updateInterval = 0.1f;
+    //获取移除重力加速度后设备的加速度
+    Vector3 acceleration = Input.gyro.userAcceleration;
+}
 
-    </header>
+protected void Update()
+{
+    //Input.gyro.attitude 返回值为 Quaternion类型，即设备旋转欧拉角
+    transform.rotation = Quaternion.Slerp(transform.rotation, Input.gyro.attitude, lowPassFilterFactor);
+}
+
+void OnGUI()
+{
+    GUI.Label(new Rect(50, 100, 500, 20), &quot;Label : &quot; + Input.gyro.attitude.x + &quot;       &quot; + Input.gyro.attitude.y + &quot;         &quot; + Input.gyro.attitude.z);
+}
+</code></pre><p>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" data-id="cj1hufsit0004nryoi15ez1hp" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/17/2016-03-17-wo-de-di-[?]-pian-bo-ke/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          我的第一篇博客
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS获得陀螺仪数据</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 </section>
         

@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2017/4 | Hexo</title>
+  <title>iOS获得陀螺仪数据 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2017/04/index.html">
+  <meta name="description" content="//第一步 @property (strong, nonatomic, readonly) CMMotionManager *sharedManager;  //第二步 -(CMMotionManager *)sharedManager {     static dispatch_once_t onceToken;     dispatch_once(&amp;amp;onceToken, ^{">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS获得陀螺仪数据">
+<meta property="og:url" content="http://yoursite.com/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="//第一步 @property (strong, nonatomic, readonly) CMMotionManager *sharedManager;  //第二步 -(CMMotionManager *)sharedManager {     static dispatch_once_t onceToken;     dispatch_once(&amp;amp;onceToken, ^{">
+<meta property="og:updated_time" content="2017-04-14T13:01:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="iOS获得陀螺仪数据">
+<meta name="twitter:description" content="//第一步 @property (strong, nonatomic, readonly) CMMotionManager *sharedManager;  //第二步 -(CMMotionManager *)sharedManager {     static dispatch_once_t onceToken;     dispatch_once(&amp;amp;onceToken, ^{">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,58 +64,87 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/hello-world/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:41.000Z" itemprop="datePublished">Apr 14</time>
+        <section id="main"><article id="post-2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" class="article-date">
+  <time datetime="2016-06-12T03:46:15.000Z" itemprop="datePublished">2016-06-12</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      iOS获得陀螺仪数据
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:40.000Z" itemprop="datePublished">Apr 14</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
-    </h1>
-  
+        <pre><code>//第一步
+@property (strong, nonatomic, readonly) CMMotionManager *sharedManager;
 
-    </header>
+//第二步
+-(CMMotionManager *)sharedManager
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        motionmanager = [[CMMotionManager alloc] init];
+    });
+    return motionmanager;
+}
+//第三步
+ CMMotionManager *mManager = [(APLAppDelegate *)[[UIApplication sharedApplication] delegate] sharedManager];
+
+  APLAccelerometerGraphViewController * __weak weakSelf = self;
+if ([mManager isAccelerometerAvailable] == YES) {
+    [mManager setAccelerometerUpdateInterval:updateInterval];
+    [mManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+        [weakSelf.graphView addX:accelerometerData.acceleration.x y:accelerometerData.acceleration.y z:accelerometerData.acceleration.z];
+        [weakSelf setLabelValueX:accelerometerData.acceleration.x y:accelerometerData.acceleration.y z:accelerometerData.acceleration.z];
+    }];
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" data-id="cj1hufsix0005nryopkrtjzts" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Unity调用iOS陀螺仪
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OpenGL多视图窗口</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 </section>
         

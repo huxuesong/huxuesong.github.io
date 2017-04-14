@@ -64,7 +64,7 @@
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/14/hello-world/" class="article-date">
-  <time datetime="2017-04-14T12:43:22.000Z" itemprop="datePublished">2017-04-14</time>
+  <time datetime="2017-04-14T13:01:41.000Z" itemprop="datePublished">2017-04-14</time>
 </a>
     
   </div>
@@ -96,7 +96,533 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/14/hello-world/" data-id="cj1httg1c0000fxyo6grsdf87" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/04/14/hello-world/" data-id="cj1hufsjd000jnryo2ssap0t8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" class="article-date">
+  <time datetime="2017-04-14T13:01:40.000Z" itemprop="datePublished">2017-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#导语<br> &#160; &#160; &#160; &#160;发表是最好的记忆。最近在论坛上看到一个关于微信精选的android开发博文<a href="http://bbs.byr.cn/#!article/MobileTerminalAT/29324" target="_blank" rel="external">微信精选</a>，感觉这是新闻类app的典型demo,所以决定自己做一个IOS版的，其间遇到了一些问题，并且用到了一些第三方框架，在此和大家分享一下我的学习体会，希望对学习iOS的有些帮助。</p>
+<p>#开发</p>
+<p>##功能介绍</p>
+<p><img src="http://7xs51u.com1.z0.glb.clouddn.com/IMG_0016.PNG" width="250"><br><img src="http://7xs51u.com1.z0.glb.clouddn.com/IMG_0017.PNG" width="250"> <br><br><br><span>&#160; &#160; &#160; &#160;主要功能是对后台提供的热门微信数据进行解析（数据是聚合网站提供的，想学大数据的可以绕过了）并在cell上进行显示，点击cell跳转到对应的微信公众号文章（如上图所示）。</span><br><br><br><br><img src="http://pic2.duowan.com/news/1010/150997792207/150997819055.jpg" width="250">    <br></p>
+<p>&#160; &#160; &#160; &#160;哈哈，是不是感觉功能很简单，大神可以绕过了，对于新手来说，接下来介绍一些干货。</p>
+<p>##技术亮点</p>
+<p>###一些第三方框架的运用</p>
+<pre><code>platform :ios,’7.1’        
+pod &apos;AFNetworking&apos;, &apos;~&gt; 3.0.4&apos;  通过url获取数据
+pod &apos;SDWebImage&apos;, &apos;~&gt; 3.7.5&apos;     通过url下载图片并缓存到本地
+pod &apos;MJRefresh&apos;, &apos;~&gt; 3.1.0&apos;         实现下拉下载数据，上拉加载更多数据功能
+pod &apos;SVWebViewController&apos;, &apos;~&gt; 1.0&apos; 关于WebView的第三方框架    
+</code></pre><p><br><br>&#160; &#160; &#160; &#160;用到了以上这些框架，是用cocopods导入的，cocopods和以上这些框架的具体用法这里就不详细介绍了。</p>
+<h3 id="对cell的自定义布局"><a href="#对cell的自定义布局" class="headerlink" title="对cell的自定义布局"></a>对cell的自定义布局</h3><p>&#160; &#160; &#160; &#160;要实现上图中的cell布局，需要自定义一下，一般有利用xib里的autolayout和纯代码方式，这里我介绍一下autolayout。<br><br>&#160; &#160; &#160; &#160;第一步整体布局<br><br><img src="http://7xs51u.com1.z0.glb.clouddn.com/cell1.png" width="250"><br><br><br>&#160; &#160; &#160; &#160;往xib里拖三个UILabel和一个UIImageView达到上图效果。<br><br>&#160; &#160; &#160; &#160;第二步对控件进行autoLayout约束。下面以ImageView和timeLabel为例。<br><img src="http://7xs51u.com1.z0.glb.clouddn.com/cellImageView.png" width="300"><br><br>&#160; &#160; &#160; &#160;使ImageView相对于父控件cell的上下边距为5，右边距为6（不要问我为啥是这个数，我估摸着来的）。<br></p>
+<p><img src="http://7xs51u.com1.z0.glb.clouddn.com/cellTimeLabel.png" width="400"><br><br><br>&#160; &#160; &#160; &#160;如上图对timeLabel进行约束，使其相对于ImageView的左边相距5.5，以及cell的下边相距5。</p>
+<p>###对JSON数据进行解析<br>&#160; &#160; &#160; &#160;一般情况下通过url获得到的数据如下<a href="http://v.juhe.cn/weixin/query?pno=1&amp;ps=20&amp;dtype=json&amp;key=d17276b3022746fe55fd60eb9b842e26" target="_blank" rel="external">json数据（点我）</a>。json数据转化规则，{}转化为NSDictionary,[]转化为NSArray。具体代码如下。</p>
+<pre><code>+(NSMutableArray *)WCsWithData:(NSData *)data{
+    NSDictionary *WCs= [NSJSONSerialization JSONObjectWithData:data            options:NSJSONReadingMutableLeaves error:nil];
+ NSDictionary *result = WCs[@&quot;result&quot;];
+NSArray *lists = (NSArray *)result[@&quot;list&quot;];
+NSMutableArray *arrayM = [NSMutableArray array];
+for (NSDictionary *dict in  lists) {
+    [arrayM addObject:[self WCWithDict:dict]];
+}
+return arrayM;
+}
+</code></pre><p>#总结<br>&#160; &#160; &#160; &#160;这个简单项目大概花了一天时间（其间包括搓炉石和斗地主的时间），遇到的坑主要是autolayout的布局问题，由于接口是别人提供的，一些功能比如搜索之类的也没办法添加了（认识到了后端的重要性）.好了本项目的地址是 <a href="https://github.com/z1017371914/cellDemo" target="_blank" rel="external">https://github.com/z1017371914/cellDemo</a>。如果你对我表示支持的话，请star或fork一下，给我继续做下去的动力。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" data-id="cj1hufsil0001nryoj9g73p9g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Go语言" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/21/Go语言/" class="article-date">
+  <time datetime="2016-10-21T10:16:12.000Z" itemprop="datePublished">2016-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/21/Go语言/">Go语言</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>做一个持久的博客输出人真是难，最近做了一个重要的决定，从iOS端转到后台，而学习的语言选择golang.那么，为什么我会选择Golang呢？其实我在做出这个选择之前已经花了大量时间做过详尽调研。 国外如Google、AWS、Cloudflare、CoreOS等，国内如七牛、阿里等都已经开始大规模使用Golang开发其云计算相关产品。 跟着世界级巨人的脚步应该不至于走错方向，而且在学习Golang的过程中，我也渐渐被其背后的设计哲学所折服。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/10/21/Go语言/" data-id="cj1hufsj8000fnryo6sj8b8by" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="[layout]-研二开学啦" class="article article-type-[layout]" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/31/研二开学啦/" class="article-date">
+  <time datetime="2016-08-31T03:18:43.000Z" itemprop="datePublished">2016-08-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/31/研二开学啦/">研二开学啦</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#2016-08-31</p>
+<p>##研二开学，新的开始</p>
+<p>####我要简单的记录一下现在的简单生活状态，研一下后半段，实习辞职，简单总结一下，以后干什么都要靠自己，尤其是人情债，这种不好衡量的怎么都还不起的。我这个人不善于表达，如果没技术根本就活不下去，还是安心搞技术，准备为明年招聘做准备吧。</p>
+<p>####放假回家，接外包，两个星期2k，养活自己是够了，但感觉还是亏，每天累的跟条狗一样，界面需求更改，接口没有形成详细的说明文档，给我的感受是，工人阶级由于自身阶级的限制永远无法发大财，以后还是要朝着资产阶级努力。</p>
+<p>####还有一件事就是在论坛上看到一条校内招iOS实习的帖子，去联系那位老师，发现也是个创业公司，先不说人家前景如何，感觉受到了深深的伤害，问我本科学校是哪的，我说大连理工的，发现不是北邮本校的，有点小失望，虽然后来说大连理工的学生也不错怎么的，但是我就突然懵逼了，他以后说的什么我都没听清，感觉压力好大，后来分析到，我这岂不是代表了大工了，我表现不好的话岂不是给大工丢人，这承担不起，而且他要找的人的任务也挺杂的，既要当产品，又要实现iOS端，还要做android，看那样子实习时间还要越长越好，然后一个月给2.5k，钱的多少先不考虑，这尼玛剥削到什么程度，以后这种帖子也看透了，就是招个廉价劳动力，能学到东西的话还行，学不到的话亏死，最后我拒绝了，也是给两方止损，就让他去找北邮本校的去吧。</p>
+<p>####来点近期的照片。</p>
+<p><img height="300px" width="400px" src="http://7xs51u.com1.z0.glb.clouddn.com/201608311.jpg"></p>
+<p><img height="400px" width="400px" style="-moz-transform:rotate(90deg);
+-webkit-transform:rotate(90deg);" src="http://7xs51u.com1.z0.glb.clouddn.com/201608312.jpg"></p>
+<p><img height="300px" width="400px" src="http://7xs51u.com1.z0.glb.clouddn.com/201608313.jpg"></p>
+<p><img height="300px" width="400px" src="http://7xs51u.com1.z0.glb.clouddn.com/201608314.jpg"></p>
+<p><img height="300px" width="400px" src="http://7xs51u.com1.z0.glb.clouddn.com/201608315.jpg"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/31/研二开学啦/" data-id="cj1hufsja000gnryo4kpszriw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-配置asterisk-sip-server" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/27/配置asterisk-sip-server/" class="article-date">
+  <time datetime="2016-07-27T07:07:11.000Z" itemprop="datePublished">2016-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/27/配置asterisk-sip-server/">配置asterisk sip server</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://draalin.com/basic-asterisk-configuration-in-ubuntu/" target="_blank" rel="external">http://draalin.com/basic-asterisk-configuration-in-ubuntu/</a></p>
+<p>amixer -c 0  cset numid=9 on //这条命令使 orange pi的音轨发生变化</p>
+<p>linux下登陆北邮人 网关 wget –post-data=”DDDDD=2012210374&amp;upass=072210&amp;0MKKey=” <a href="http://10.3.8.211" target="_blank" rel="external">http://10.3.8.211</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/27/配置asterisk-sip-server/" data-id="cj1hufsjg000knryodnzovo7b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-07-24-zai-macshang-pei-zhi-opencvhuan-jing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/24/2016-07-24-zai-macshang-pei-zhi-opencvhuan-jing/" class="article-date">
+  <time datetime="2016-07-24T07:39:05.000Z" itemprop="datePublished">2016-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/24/2016-07-24-zai-macshang-pei-zhi-opencvhuan-jing/">在MAC上配置OpenCV环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##缘起<br>最近有个工程要用到python里的OpenCV库，但是由于MAC最新系统（OSX 10.11）安全性太高，直接用pip install 安装会出错，安装的过程遇到很多坑，在这里总结一下，与大家分享。</p>
+<p>##过程</p>
+<ol>
+<li><p>安装brew</p>
+</li>
+<li><p>安装python（直接在官网下载安装包）点击.dmg文件，安装python。</p>
+</li>
+</ol>
+<p>在应用程序列表中会添加IDEL、pythonLauncher、buildapplet三个应用。</p>
+<p>同时，系统默认的python被替换为新版本，新版本安装路径。</p>
+<pre><code>/Library/Frameworks/Python.framework/Versions/2.7/
+/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-package    #官方 python安装包路径
+</code></pre><p><br></p>
+<pre><code>/System/Library/Frameworks/Python.framework/Versions/2.7
+/Library/Python/2.7/site-packages     #osx python安装包路径
+</code></pre><p> 3.安装OpenCV<br><br>  如果直接通过brew install opencv安装的话，会出现什么linpng16.16 动态库版本太低的问题，那么我们就得安装低版本的opencv,这里我安装的是opencv 2.4.10，通过源代码安装。<br></p>
+<pre><code>     这里通过下载下来代码安装
+  cd /usr/local/opencv-2.4.10
+mkdir release
+cd release
+
+cmake -D PYTHON_EXECUTABLE=/Library/Frameworks/Python.framework/Versions/2.7/    bin/python \
+     -D PYTHON_PACKAGES_PATH=/Library/Frameworks/Python.framework/Versions/2.7/    lib/python2.7/site-packages \
+ -D INSTALL_PYTHON_EXAMPLES=ON \
+ -D PYTHON_INCLUDE_DIR=/Library/Frameworks/Python.framework/Versions/2.7/    Headers \
+ -D PYTHON_LIBRARY=/Library/Frameworks/Python.framework/Versions/2.7/lib/    libpython2.7.dylib \
+..
+
+make -j8
+make install
+</code></pre><p>4.这时你又会发现报编译错误，这里下载的opencv源代码有错误，需要改两处地方（你说坑爹不坑爹）。</p>
+<pre><code>在modules/legacy/src/calibfilter.cpp 中做如下更改
+</code></pre><p><img src="http://7xs51u.com1.z0.glb.clouddn.com/blog201607241.png" width="500px"><br><br><img src="http://7xs51u.com1.z0.glb.clouddn.com/blog201607242.png" width="500px"></p>
+<p>5.这回make -j8顺利编译通过，然后再make install 就能正常使用opencv了。</p>
+<p>#结语<br>这是我找到的在最新的OSX系统上安装opencv的方法，如果你有什么更好的方法，请与大家分享交流。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/24/2016-07-24-zai-macshang-pei-zhi-opencvhuan-jing/" data-id="cj1hufsj10009nryohnarp7lp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/" class="article-date">
+  <time datetime="2016-07-24T07:30:59.000Z" itemprop="datePublished">2016-07-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MAC/">MAC</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/">在CentOS7上部署MQTT服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/" data-id="cj1hufsj6000cnryo2yu1qmv2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" class="article-date">
+  <time datetime="2016-07-04T00:25:59.000Z" itemprop="datePublished">2016-07-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/">在CentOS7上部署MQTT服务器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>Step 1: Add the CentOS 7 mosquitto repository
+$ cd /etc/yum.repos.d
+$ wget http://download.opensuse.org/repositories/home:/oojah:/mqtt/    CentOS_CentOS-7/home:oojah:mqtt.repo
+$ sudo yum update
+Step 2: Install mosquitto &amp; mosquitto-clients
+
+$ sudo yum install mosquitto
+$ sudo yum install mosquitto-clients
+Step 3: Run mosquitto
+
+$ sudo su
+# /usr/sbin/mosquitto -d -c /etc/mosquitto/mosquitto.conf &gt; /var/log/    mosquitto.log 2&gt;&amp;1
+Step 4: Test mosquitto_sub &amp; mosquitto_pub
+
+$ mosquitto_sub -h [server_address] -t /[topic]
+$ mosquitto_pub -h [server_address] -t /[topic] -m “[message]”
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" data-id="cj1hufsj5000bnryodepx50ix" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-06-24-openglduo-shi-tu-chuang-kou" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/" class="article-date">
+  <time datetime="2016-06-24T07:53:10.000Z" itemprop="datePublished">2016-06-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OpenGL/">OpenGL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/">OpenGL多视图窗口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#OpenGL中的多视口<br>    //视口一  左下角<br>    glEnable(GL_SCISSOR_TEST);<br>    glScissor(0,0,m_width/2-1,m_height/2-1);</p>
+<pre><code>glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glDisable(GL_SCISSOR_TEST);
+
+glViewport(0,0,m_width/2-1,m_height/2-1);
+glMatrixMode(GL_PROJECTION);                        
+glLoadIdentity();                                    
+gluPerspective(45.0f,(GLfloat)m_width/(GLfloat)m_height,0.1f,100.0f);
+
+glMatrixMode(GL_MODELVIEW);                            
+glLoadIdentity();    
+
+    //绘制部分
+
+//视口二 左上角
+glEnable(GL_SCISSOR_TEST);
+glScissor(0,    m_height/2+1,    m_width/2-1,    m_height/2-1);        
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glDisable(GL_SCISSOR_TEST);
+
+glViewport(0,    m_height/2+1,    m_width/2-1,    m_height/2-1);
+glMatrixMode(GL_PROJECTION);                        
+glLoadIdentity();                                    
+
+gluPerspective(45.0f,(GLfloat)m_width/(GLfloat)m_height,0.1f,100.0f);
+
+glMatrixMode(GL_MODELVIEW);                            
+glLoadIdentity();    
+
+//绘制部分
+
+
+//视口三  右下角
+glEnable(GL_SCISSOR_TEST);
+glScissor(m_width/2+1,    0,    m_width/2-1,    m_height/2-1);        
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glDisable(GL_SCISSOR_TEST);
+
+glViewport(m_width/2+1,    0,    m_width/2-1,    m_height/2-1);
+glMatrixMode(GL_PROJECTION);                        
+glLoadIdentity();                                    
+
+gluPerspective(45.0f,(GLfloat)m_width/(GLfloat)m_height,0.1f,100.0f);
+
+glMatrixMode(GL_MODELVIEW);                            
+glLoadIdentity();    
+
+//绘制部分
+
+
+//视口四  右上角
+glEnable(GL_SCISSOR_TEST);
+
+glScissor(m_width/2+1,    m_height/2+1, m_width/2-1, m_height/2-1);        
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glDisable(GL_SCISSOR_TEST);
+
+glViewport(m_width/2+1,    m_height/2+1, m_width/2-1, m_height/2-1);
+glMatrixMode(GL_PROJECTION);                        
+glLoadIdentity();                                    
+
+gluPerspective(45.0f,(GLfloat)m_width/(GLfloat)m_height,0.1f,100.0f);
+
+glMatrixMode(GL_MODELVIEW);                            
+glLoadIdentity();    
+
+//绘制部分
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/" data-id="cj1hufsiz0007nryowvovlrqw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" class="article-date">
+  <time datetime="2016-06-12T03:46:15.000Z" itemprop="datePublished">2016-06-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/">iOS获得陀螺仪数据</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>//第一步
+@property (strong, nonatomic, readonly) CMMotionManager *sharedManager;
+
+//第二步
+-(CMMotionManager *)sharedManager
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        motionmanager = [[CMMotionManager alloc] init];
+    });
+    return motionmanager;
+}
+//第三步
+ CMMotionManager *mManager = [(APLAppDelegate *)[[UIApplication sharedApplication] delegate] sharedManager];
+
+  APLAccelerometerGraphViewController * __weak weakSelf = self;
+if ([mManager isAccelerometerAvailable] == YES) {
+    [mManager setAccelerometerUpdateInterval:updateInterval];
+    [mManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
+        [weakSelf.graphView addX:accelerometerData.acceleration.x y:accelerometerData.acceleration.y z:accelerometerData.acceleration.z];
+        [weakSelf setLabelValueX:accelerometerData.acceleration.x y:accelerometerData.acceleration.y z:accelerometerData.acceleration.z];
+    }];
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" data-id="cj1hufsix0005nryopkrtjzts" class="article-share-link">Share</a>
       
       
     </footer>
@@ -107,23 +633,48 @@
 
   
 
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+  </nav>
 </section>
         
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MAC/">MAC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OpenGL/">OpenGL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity/">Unity</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/生活随笔/">生活随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 10px;">Linux</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -137,6 +688,22 @@
         
           <li>
             <a href="/2017/04/14/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/21/Go语言/">Go语言</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/31/研二开学啦/">研二开学啦</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/27/配置asterisk-sip-server/">配置asterisk sip server</a>
           </li>
         
       </ul>

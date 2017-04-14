@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
@@ -61,222 +61,191 @@
       <div class="outer">
         <section id="main">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/hello-world/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:41.000Z" itemprop="datePublished">Apr 14</time>
+    <article id="post-2016-06-06-unitydiao-yong-iostuo-luo-yi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" class="article-date">
+  <time datetime="2016-06-06T10:42:31.000Z" itemprop="datePublished">2016-06-06</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Unity/">Unity</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/hello-world/">Hello World</a>
+      <a class="article-title" href="/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/">Unity调用iOS陀螺仪</a>
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:40.000Z" itemprop="datePublished">Apr 14</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
+        <p>实现陀螺仪功能，旋转设备，摄像机跟随旋转<br>将下面脚本拖拽到摄像机上，打包为Android或iOS项目，在真机上测试即可<br>场景中要放一些模型，不然看不到效果</p>
+<pre><code>using UnityEngine;
+using System.Collections;
+public class AAA : MonoBehaviour {
+private const float lowPassFilterFactor = 0.2f;
+protected void Start()
+{
+    //设置设备陀螺仪的开启/关闭状态，使用陀螺仪功能必须设置为 true
+    Input.gyro.enabled = true;
+    //获取设备重力加速度向量
+    Vector3 deviceGravity = Input.gyro.gravity;
+    //设备的旋转速度，返回结果为x，y，z轴的旋转速度，单位为（弧度/秒）
+    Vector3 rotationVelocity = Input.gyro.rotationRate;
+    //获取更加精确的旋转
+    Vector3 rotationVelocity2 = Input.gyro.rotationRateUnbiased;
+    //设置陀螺仪的更新检索时间，即隔 0.1秒更新一次
+    Input.gyro.updateInterval = 0.1f;
+    //获取移除重力加速度后设备的加速度
+    Vector3 acceleration = Input.gyro.userAcceleration;
+}
+
+protected void Update()
+{
+    //Input.gyro.attitude 返回值为 Quaternion类型，即设备旋转欧拉角
+    transform.rotation = Quaternion.Slerp(transform.rotation, Input.gyro.attitude, lowPassFilterFactor);
+}
+
+void OnGUI()
+{
+    GUI.Label(new Rect(50, 100, 500, 20), &quot;Label : &quot; + Input.gyro.attitude.x + &quot;       &quot; + Input.gyro.attitude.y + &quot;         &quot; + Input.gyro.attitude.z);
+}
+</code></pre><p>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" data-id="cj1hufsit0004nryoi15ez1hp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-03-17-wo-de-di-[?]-pian-bo-ke" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/17/2016-03-17-wo-de-di-[?]-pian-bo-ke/" class="article-date">
+  <time datetime="2016-03-17T02:23:45.000Z" itemprop="datePublished">2016-03-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/生活随笔/">生活随笔</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
+      <a class="article-title" href="/2016/03/17/2016-03-17-wo-de-di-[?]-pian-bo-ke/">我的第一篇博客</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>   最近感觉研究生生活无聊至极，所以闲下来搭建了一个博客，把平时自己对学习到的新知识新技术记录下来，希望能做一个持续输出的博客er.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/17/2016-03-17-wo-de-di-[?]-pian-bo-ke/" data-id="cj1hufsir0003nryotpwxzajm" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
-</article>
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/10/21/Go语言/" class="archive-article-date">
-  <time datetime="2016-10-21T10:16:12.000Z" itemprop="datePublished">Oct 21</time>
+</article>
+
+
+  
+    <article id="post-2016-01-21-guan-yu-er-jin-zhi-de-[?]-xie-suan-fa" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/21/2016-01-21-guan-yu-er-jin-zhi-de-[?]-xie-suan-fa/" class="article-date">
+  <time datetime="2016-01-21T14:56:29.000Z" itemprop="datePublished">2016-01-21</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/21/Go语言/">Go语言</a>
+      <a class="article-title" href="/2016/01/21/2016-01-21-guan-yu-er-jin-zhi-de-[?]-xie-suan-fa/">关于二进制的一些算法</a>
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-[layout]">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/08/31/研二开学啦/" class="archive-article-date">
-  <time datetime="2016-08-31T03:18:43.000Z" itemprop="datePublished">Aug 31</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/31/研二开学啦/">研二开学啦</a>
-    </h1>
-  
+        <p>求下面函数的返回值(微软) – 统计1的个数。</p>
+<pre><code>int func(int x)  
+{
+int countx = 0;
+while(x)
+{
+    countx++;
+    x = x&amp;(x-1);
+}
+return countx;
+} 
+</code></pre><p> 假定x = 9999<br> 10011100001111<br>答案: 8</p>
+<p>思路: 将x转化为2进制，看含有的1的个数。<br>注: 每执行一次x = x&amp;(x-1)，会将x用二进制表示时最右边的一个1变为0，因为x-1将会将该位(x用二进制表示时最右边的一个1)变为0。</p>
+<p>判断一个数(x)是否是2的n次方</p>
+<pre><code>int func(int x)    
+{    
+    if( (x&amp;(x-1)) == 0 )   
+    return 1;   
+      else   
+    return 0;    
+}     
+int main()   
+{   
+    int x = 8;    
+    printf(&quot;%d\n&quot;, func(x));      
+}     
+</code></pre><p>注:<br>(1) 如果一个数是2的n次方，那么这个数用二进制表示时其最高位为1，其余位为0。</p>
+<p>(2) == 优先级高于 &amp;</p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/07/27/配置asterisk-sip-server/" class="archive-article-date">
-  <time datetime="2016-07-27T07:07:11.000Z" itemprop="datePublished">Jul 27</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/27/配置asterisk-sip-server/">配置asterisk sip server</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/07/24/2016-07-24-zai-macshang-pei-zhi-opencvhuan-jing/" class="archive-article-date">
-  <time datetime="2016-07-24T07:39:05.000Z" itemprop="datePublished">Jul 24</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/01/21/2016-01-21-guan-yu-er-jin-zhi-de-[?]-xie-suan-fa/" data-id="cj1hufsih0000nryonpfp3be0" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/24/2016-07-24-zai-macshang-pei-zhi-opencvhuan-jing/">在MAC上配置OpenCV环境</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/" class="archive-article-date">
-  <time datetime="2016-07-24T07:30:59.000Z" itemprop="datePublished">Jul 24</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/">在CentOS7上部署MQTT服务器</a>
-    </h1>
-  
-
-    </header>
+    </footer>
   </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" class="archive-article-date">
-  <time datetime="2016-07-04T00:25:59.000Z" itemprop="datePublished">Jul 4</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/">在CentOS7上部署MQTT服务器</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/" class="archive-article-date">
-  <time datetime="2016-06-24T07:53:10.000Z" itemprop="datePublished">Jun 24</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/">OpenGL多视图窗口</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" class="archive-article-date">
-  <time datetime="2016-06-12T03:46:15.000Z" itemprop="datePublished">Jun 12</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/">iOS获得陀螺仪数据</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">__('next') &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 </section>
         

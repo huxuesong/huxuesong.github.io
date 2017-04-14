@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2017/4 | Hexo</title>
+  <title>在CentOS7上部署MQTT服务器 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2017/04/index.html">
+  <meta name="description" content="Step 1: Add the CentOS 7 mosquitto repository $ cd /etc/yum.repos.d $ wget http://download.opensuse.org/repositories/home:/oojah:/mqtt/    CentOS_CentOS-7/home:oojah:mqtt.repo $ sudo yum update Step 2">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在CentOS7上部署MQTT服务器">
+<meta property="og:url" content="http://yoursite.com/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Step 1: Add the CentOS 7 mosquitto repository $ cd /etc/yum.repos.d $ wget http://download.opensuse.org/repositories/home:/oojah:/mqtt/    CentOS_CentOS-7/home:oojah:mqtt.repo $ sudo yum update Step 2">
+<meta property="og:updated_time" content="2017-04-14T13:01:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="在CentOS7上部署MQTT服务器">
+<meta name="twitter:description" content="Step 1: Add the CentOS 7 mosquitto repository $ cd /etc/yum.repos.d $ wget http://download.opensuse.org/repositories/home:/oojah:/mqtt/    CentOS_CentOS-7/home:oojah:mqtt.repo $ sudo yum update Step 2">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,58 +64,80 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/hello-world/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:41.000Z" itemprop="datePublished">Apr 14</time>
+        <section id="main"><article id="post-2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" class="article-date">
+  <time datetime="2016-07-04T00:25:59.000Z" itemprop="datePublished">2016-07-04</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      在CentOS7上部署MQTT服务器
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" class="archive-article-date">
-  <time datetime="2017-04-14T13:01:40.000Z" itemprop="datePublished">Apr 14</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
-    </h1>
-  
+        <pre><code>Step 1: Add the CentOS 7 mosquitto repository
+$ cd /etc/yum.repos.d
+$ wget http://download.opensuse.org/repositories/home:/oojah:/mqtt/    CentOS_CentOS-7/home:oojah:mqtt.repo
+$ sudo yum update
+Step 2: Install mosquitto &amp; mosquitto-clients
 
-    </header>
+$ sudo yum install mosquitto
+$ sudo yum install mosquitto-clients
+Step 3: Run mosquitto
+
+$ sudo su
+# /usr/sbin/mosquitto -d -c /etc/mosquitto/mosquitto.conf &gt; /var/log/    mosquitto.log 2&gt;&amp;1
+Step 4: Test mosquitto_sub &amp; mosquitto_pub
+
+$ mosquitto_sub -h [server_address] -t /[topic]
+$ mosquitto_pub -h [server_address] -t /[topic] -m “[message]”
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" data-id="cj1hufsj5000bnryodepx50ix" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/24/2016-06-24-openglduo-shi-tu-chuang-kou/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OpenGL多视图窗口
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在CentOS7上部署MQTT服务器</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 </section>
         
