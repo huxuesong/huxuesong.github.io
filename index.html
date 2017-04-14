@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -60,69 +60,6 @@
 </header>
       <div class="outer">
         <section id="main">
-  
-    <article id="post-2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" class="article-date">
-  <time datetime="2017-04-14T13:01:40.000Z" itemprop="datePublished">2017-04-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>#导语<br> &#160; &#160; &#160; &#160;发表是最好的记忆。最近在论坛上看到一个关于微信精选的android开发博文<a href="http://bbs.byr.cn/#!article/MobileTerminalAT/29324" target="_blank" rel="external">微信精选</a>，感觉这是新闻类app的典型demo,所以决定自己做一个IOS版的，其间遇到了一些问题，并且用到了一些第三方框架，在此和大家分享一下我的学习体会，希望对学习iOS的有些帮助。</p>
-<p>#开发</p>
-<p>##功能介绍</p>
-<p><img src="http://7xs51u.com1.z0.glb.clouddn.com/IMG_0016.PNG" width="250"><br><img src="http://7xs51u.com1.z0.glb.clouddn.com/IMG_0017.PNG" width="250"> <br><br><br><span>&#160; &#160; &#160; &#160;主要功能是对后台提供的热门微信数据进行解析（数据是聚合网站提供的，想学大数据的可以绕过了）并在cell上进行显示，点击cell跳转到对应的微信公众号文章（如上图所示）。</span><br><br><br><br><img src="http://pic2.duowan.com/news/1010/150997792207/150997819055.jpg" width="250">    <br></p>
-<p>&#160; &#160; &#160; &#160;哈哈，是不是感觉功能很简单，大神可以绕过了，对于新手来说，接下来介绍一些干货。</p>
-<p>##技术亮点</p>
-<p>###一些第三方框架的运用</p>
-<pre><code>platform :ios,’7.1’        
-pod &apos;AFNetworking&apos;, &apos;~&gt; 3.0.4&apos;  通过url获取数据
-pod &apos;SDWebImage&apos;, &apos;~&gt; 3.7.5&apos;     通过url下载图片并缓存到本地
-pod &apos;MJRefresh&apos;, &apos;~&gt; 3.1.0&apos;         实现下拉下载数据，上拉加载更多数据功能
-pod &apos;SVWebViewController&apos;, &apos;~&gt; 1.0&apos; 关于WebView的第三方框架    
-</code></pre><p><br><br>&#160; &#160; &#160; &#160;用到了以上这些框架，是用cocopods导入的，cocopods和以上这些框架的具体用法这里就不详细介绍了。</p>
-<h3 id="对cell的自定义布局"><a href="#对cell的自定义布局" class="headerlink" title="对cell的自定义布局"></a>对cell的自定义布局</h3><p>&#160; &#160; &#160; &#160;要实现上图中的cell布局，需要自定义一下，一般有利用xib里的autolayout和纯代码方式，这里我介绍一下autolayout。<br><br>&#160; &#160; &#160; &#160;第一步整体布局<br><br><img src="http://7xs51u.com1.z0.glb.clouddn.com/cell1.png" width="250"><br><br><br>&#160; &#160; &#160; &#160;往xib里拖三个UILabel和一个UIImageView达到上图效果。<br><br>&#160; &#160; &#160; &#160;第二步对控件进行autoLayout约束。下面以ImageView和timeLabel为例。<br><img src="http://7xs51u.com1.z0.glb.clouddn.com/cellImageView.png" width="300"><br><br>&#160; &#160; &#160; &#160;使ImageView相对于父控件cell的上下边距为5，右边距为6（不要问我为啥是这个数，我估摸着来的）。<br></p>
-<p><img src="http://7xs51u.com1.z0.glb.clouddn.com/cellTimeLabel.png" width="400"><br><br><br>&#160; &#160; &#160; &#160;如上图对timeLabel进行约束，使其相对于ImageView的左边相距5.5，以及cell的下边相距5。</p>
-<p>###对JSON数据进行解析<br>&#160; &#160; &#160; &#160;一般情况下通过url获得到的数据如下<a href="http://v.juhe.cn/weixin/query?pno=1&amp;ps=20&amp;dtype=json&amp;key=d17276b3022746fe55fd60eb9b842e26" target="_blank" rel="external">json数据（点我）</a>。json数据转化规则，{}转化为NSDictionary,[]转化为NSArray。具体代码如下。</p>
-<pre><code>+(NSMutableArray *)WCsWithData:(NSData *)data{
-    NSDictionary *WCs= [NSJSONSerialization JSONObjectWithData:data            options:NSJSONReadingMutableLeaves error:nil];
- NSDictionary *result = WCs[@&quot;result&quot;];
-NSArray *lists = (NSArray *)result[@&quot;list&quot;];
-NSMutableArray *arrayM = [NSMutableArray array];
-for (NSDictionary *dict in  lists) {
-    [arrayM addObject:[self WCWithDict:dict]];
-}
-return arrayM;
-}
-</code></pre><p>#总结<br>&#160; &#160; &#160; &#160;这个简单项目大概花了一天时间（其间包括搓炉石和斗地主的时间），遇到的坑主要是autolayout的布局问题，由于接口是别人提供的，一些功能比如搜索之类的也没办法添加了（认识到了后端的重要性）.好了本项目的地址是 <a href="https://github.com/z1017371914/cellDemo" target="_blank" rel="external">https://github.com/z1017371914/cellDemo</a>。如果你对我表示支持的话，请star或fork一下，给我继续做下去的动力。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/" data-id="cj1huimqz0001pcyo0d337dec" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
   
     <article id="post-Go语言" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -151,7 +88,7 @@ return arrayM;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/21/Go语言/" data-id="cj1huimrx000gpcyocaf5sg2j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/21/Go语言/" data-id="cj1hukjy7000cqnyor48clxsc" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -199,7 +136,7 @@ return arrayM;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/31/研二开学啦/" data-id="cj1huims1000ipcyom03kn1xd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/31/研二开学啦/" data-id="cj1hukjy8000dqnyonsp93b6r" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -238,7 +175,7 @@ return arrayM;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/27/配置asterisk-sip-server/" data-id="cj1huimrz000hpcyo92v0j2i1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/27/配置asterisk-sip-server/" data-id="cj1hukjxy0007qnyoqalc6u0r" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
@@ -280,7 +217,7 @@ return arrayM;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/" data-id="cj1huimr90005pcyofspyy32y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/" data-id="cj1hukjxu0005qnyofupa4fck" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -336,7 +273,7 @@ $ mosquitto_pub -h [server_address] -t /[topic] -m “[message]”
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" data-id="cj1huimr60004pcyo1plvdgei" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/" data-id="cj1hukjxs0004qnyo22p2ypjx" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -399,7 +336,7 @@ if ([mManager isAccelerometerAvailable] == YES) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" data-id="cj1huimrt000epcyocn7l53i5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/06/12/2016-06-12-ioshuo-de-tuo-luo-yi-shu-ju/" data-id="cj1hukjxr0003qnyozznhwv7w" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -471,7 +408,7 @@ void OnGUI()
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" data-id="cj1huimr50003pcyooe2irr10" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/06/06/2016-06-06-unitydiao-yong-iostuo-luo-yi/" data-id="cj1hukjxl0001qnyo3x0d44sj" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -512,7 +449,7 @@ void OnGUI()
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/17/2016-03-17-wo-de-di-[?]-pian-bo-ke/" data-id="cj1huimqv0000pcyoupvn5xe3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/17/2016-03-17-wo-de-di-[?]-pian-bo-ke/" data-id="cj1hukjxg0000qnyo9hwn8emm" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -580,7 +517,7 @@ int main()
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/21/2016-01-21-guan-yu-er-jin-zhi-de-[?]-xie-suan-fa/" data-id="cj1huimrr000dpcyo1kuz1rm4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/21/2016-01-21-guan-yu-er-jin-zhi-de-[?]-xie-suan-fa/" data-id="cj1hukjy10009qnyo1v125b7w" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -597,7 +534,7 @@ int main()
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MAC/">MAC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity/">Unity</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/生活随笔/">生活随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a></li></ul>
     </div>
@@ -607,7 +544,7 @@ int main()
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
     </div>
@@ -617,7 +554,7 @@ int main()
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
       <a href="/tags/Linux/" style="font-size: 10px;">Linux</a>
     </div>
@@ -628,7 +565,7 @@ int main()
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -636,13 +573,9 @@ int main()
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2017/04/14/2016-03-22-ioswei-xin-jing-xuan-kai-fa-zong-jie/">IOS微信精选开发总结</a>
-          </li>
         
           <li>
             <a href="/2016/10/21/Go语言/">Go语言</a>
@@ -660,6 +593,10 @@ int main()
             <a href="/2016/07/24/2016-07-24-zai-macxi-tong-shang-an-zhuang-opencv/">在CentOS7上部署MQTT服务器</a>
           </li>
         
+          <li>
+            <a href="/2016/07/04/2016-07-04-zai-centos7shang-bu-shu-mqttfu-wu-qi/">在CentOS7上部署MQTT服务器</a>
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -673,7 +610,7 @@ int main()
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
